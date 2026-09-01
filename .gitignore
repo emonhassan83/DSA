@@ -1,0 +1,16 @@
+# Local executable and runtime artifacts
+*.exe
+*.out
+*.obj
+*.o
+
+# Input/output files
+input.txt
+output.txt
+
+# VS Code / editor metadata
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
