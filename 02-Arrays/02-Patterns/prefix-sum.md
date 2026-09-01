@@ -14,16 +14,25 @@ arr = [2, 4, 6, 8]
 prefix = [2, 6, 12, 20]
 ```
 
+### Formula
+```cpp
+prefix[i] = arr[0] + arr[1] + ... + arr[i]
+```
+
 ---
 
 ## ২) কেন দরকার?
 
-Prefix sum ব্যবহার করে আমরা subarray sum দ্রুত বের করতে পারি।
+অনেক problem-এ subarray sum, range sum, cumulative value বের করতে হয়।
 
-যেমন:
+এমন সময় prefix sum খুবই উপকারী।
+
+### Example
 ```text
-sum(l..r) = prefix[r] - prefix[l-1]
+sum of arr[2..4] = prefix[4] - prefix[1]
 ```
+
+এভাবে repeated queries O(1) time-এ করা যায়।
 
 ---
 
@@ -36,22 +45,17 @@ for (int i = 1; i < n; i++) {
 }
 ```
 
----
-
-## ৪) ব্যবহার
-
-- subarray sum query
-- range sum problem
-- average calculation
-- equilibrium problems
+### Why useful?
+এখন আমরা যেকোনো subarray sum খুব দ্রুত বের করতে পারব।
 
 ---
 
-## ৫) Example
+## ৪) Formula for range sum
 ```cpp
 int rangeSum(int l, int r, vector<int>& arr) {
     vector<int> prefix(arr.size());
     prefix[0] = arr[0];
+
     for (int i = 1; i < arr.size(); i++) {
         prefix[i] = prefix[i - 1] + arr[i];
     }
@@ -60,17 +64,36 @@ int rangeSum(int l, int r, vector<int>& arr) {
 }
 ```
 
+### Example
+```text
+arr = [1, 2, 3, 4, 5]
+range 1..3 => 2 + 3 + 4 = 9
+```
+
+---
+
+## ৫) ব্যবহার
+
+- subarray sum query
+- range sum calculation
+- average calculation
+- equilibrium problems
+- frequency-based cumulative checks
+
 ---
 
 ## ৬) Complexity
 
-- building prefix sum: O(n)
+- build prefix sum: O(n)
 - each query: O(1)
+
+### Benefit
+এভাবে repeated queries খুব efficiently solve করা যায়।
 
 ---
 
 ## ৭) Interview note
 
-Prefix sum অনেক problem-এ fast query করার জন্য ব্যবহৃত হয়।
+Prefix sum is a classic array optimization technique.
 
-এটি array patterns-এর একটি গুরুত্বপূর্ণ অংশ।
+যদি problem-এ many queries or subarray sum related condition থাকে, prefix sum almost always comes into mind.

@@ -4,44 +4,59 @@
 
 Array হলো একই ধরনের data-এর একটি ধারাবাহিক collection।
 
-উদাহরণ:
+এটি memory-এ consecutive space-এ store করা হয়।
+
+### উদাহরণ
 ```cpp
 int arr[5] = {10, 20, 30, 40, 50};
 ```
 
-এখানে সবগুলো element integer, এবং তারা consecutive memory location-এ সংরক্ষিত থাকে।
+এখানে 5টি integer data one after another memory-এ রাখা আছে।
+
+### Array-এর সাধারণ গঠন
+```cpp
+int arr[5];
+arr[0] = 10;
+arr[1] = 20;
+```
 
 ---
 
 ## ২) Array-এর বৈশিষ্ট্য
 
 - fixed size
+- same type data
 - index-based access
 - contiguous memory
 - random access
-- same type data
 
 ### সুবিধা
 - access খুব fast
 - memory predictable
 - traversal easy
+- indexing-based logic simple
 
 ### সীমাবদ্ধতা
-- insertion/deletion cost higher
+- insertion/deletion costly
 - resizing problem
+- fixed length
 
 ---
 
 ## ৩) Indexing
 
-Array-এর প্রতিটি element-এর জন্য index থাকে।
+Array-এর প্রতিটি element-এর একটি index থাকে।
 
 ```cpp
 arr[0] = 10; // first element
 arr[1] = 20; // second element
+arr[4] = 50; // last element
 ```
 
-Index 0-based indexing সাধারণত C++-এ ব্যবহৃত হয়।
+C++-এ index 0-based।
+
+### Why important?
+কারণ অনেক problem-এ index manipulation দিয়ে solution করা হয়।
 
 ---
 
@@ -51,13 +66,16 @@ Index 0-based indexing সাধারণত C++-এ ব্যবহৃত হ�
 arr[i]
 ```
 
-এটি O(1) time complexity রাখে, কারণ direct memory access করা হয়।
+এটি direct memory access, তাই complexity O(1)।
+
+### কারণ
+array element ঠিক index দিয়ে পাওয়া যায়, loop walk না করে।
 
 ---
 
 ## ৫) Traversal
 
-Array traversal মানে সব element একবার করে দেখা।
+Array traversal মানে array-এর সব element একবারে দেখা।
 
 ```cpp
 for (int i = 0; i < n; i++) {
@@ -65,37 +83,45 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-এটি O(n) complexity।
+### Complexity
+- Time: O(n)
+- Space: O(1)
+
+কারণ n elements visit করতে হচ্ছে।
 
 ---
 
 ## ৬) Insertion
 
-Array-এ insertion করলে কিছু elements shift হতে পারে।
+Array-এ insert করলে উপাদান shift হতে পারে।
 
 ### Example
 ```cpp
 int arr[5] = {1, 2, 4, 5};
 ```
 
-এখানে 3 insert করতে চাইলে 4, 5 shifted হবে।
+এখানে 3 insert করতে চাইলে 4, 5-এর পরের positions shift হবে।
 
 ### Complexity
-- best case: O(1)
-- worst case: O(n)
+- Best case: O(1)
+- Worst case: O(n)
+
+কারণ middle/ beginning-এ insert করলে সব elements shift হতে পারে।
 
 ---
 
 ## ৭) Deletion
 
-Deletion-এও shifting লাগে।
+Delete-ও array-এ often shifting লাগে।
 
 ```cpp
 arr[2] = arr[3];
 ```
 
+এভাবে data move করে।
+
 ### Complexity
-- O(n) generally
+- Generally O(n)
 
 ---
 
@@ -108,14 +134,26 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-- time: O(n)
-- space: O(1)
+### Complexity
+- Time: O(n)
+- Space: O(1)
 
 ### Binary Search
 Sorted array-এ binary search ব্যবহার করা হয়।
 
-- time: O(log n)
-- useful for large sorted arrays
+```cpp
+int left = 0, right = n - 1;
+while (left <= right) {
+    int mid = left + (right - left) / 2;
+    if (arr[mid] == target) return mid;
+    else if (arr[mid] < target) left = mid + 1;
+    else right = mid - 1;
+}
+```
+
+### Complexity
+- Time: O(log n)
+- Space: O(1)
 
 ---
 
@@ -123,57 +161,84 @@ Sorted array-এ binary search ব্যবহার করা হয়।
 
 Prefix sum হলো cumulative sum array।
 
+### Example
 ```cpp
-prefix[0] = arr[0];
-for (int i = 1; i < n; i++) {
-    prefix[i] = prefix[i-1] + arr[i];
-}
+arr = [2, 4, 6, 8]
+prefix = [2, 6, 12, 20]
 ```
 
-এটি subarray sum query fast করে।
+### Formula
+```cpp
+prefix[i] = arr[0] + arr[1] + ... + arr[i];
+```
+
+### Why useful?
+Subarray sum query করতে এটি খুব fast।
+
+```cpp
+sum(l..r) = prefix[r] - prefix[l-1]
+```
 
 ---
 
 ## ১০) Two Pointers
 
-Array-এ দুইটি pointer ব্যবহার করে solve করা হয়।
+Array-এ দুইটি pointer ব্যবহার করে solution করা হয়।
 
 ### Common use
-- sum pairs
+- pair sum
 - palindrome check
 - reverse array
-- sorted array problems
+- remove duplicates
+- two-sum variant
+
+### Benefit
+- O(n) complexity
+- extra memory low
 
 ---
 
 ## ১১) Sliding Window
 
-Array-এ window move করে problem solve করা হয়।
+Array-এ window move করে কাজ করা হয়।
 
 ### Example
-- maximum sum subarray of size k
-- longest substring with k unique chars
+- maximum sum of subarray of size k
+- longest subarray satisfying condition
+- minimum window problem
+
+### Idea
+- window expand
+- condition invalid হলে shrink
+- valid হলে answer update
 
 ---
 
 ## ১২) Array problems examples
 
-- Find maximum element
-- Find minimum element
-- Reverse array
-- Remove duplicate values
-- Find pair sum
-- Find subarray sum
+- maximum element
+- minimum element
+- reverse array
+- rotate array
+- pair sum
+- subarray sum
+- duplicate removal
+- sorted array check
 
 ---
 
 ## ১৩) Interview note
 
-Array হলো DSA-এর সবচেয়ে গুরুত্বপূর্ণ ভিত্তি।
+Array হলো DSA-এর ভিত্তি।
 
-অনেক harder problem array pattern-এ solve হয়।
+অনেক advanced topic-এ array patterns ব্যবহার হয়, যেমন:
+- two pointers
+- prefix sum
+- sliding window
+- binary search
+- hashing
 
-সুতরাং array concept ভালোভাবে বুঝতে হবে।
+সুতরাং array concept ঠিকভাবে বুঝতে না পারলে অন্য topics-ও কঠিন হয়ে পড়ে।
 
 ---
 
@@ -181,9 +246,10 @@ Array হলো DSA-এর সবচেয়ে গুরুত্বপূর�
 
 - array হলো same-type data collection
 - index-based access
-- O(1) random access
-- insertion/deletion cost O(n)
-- traversal O(n)
-- বিভিন্ন problem patterns array-এ বসে
+- direct access => O(1)
+- traversal => O(n)
+- insertion/deletion => O(n)
+- search => O(n) or O(log n)
+- many advanced patterns are built on arrays
 
 > Array শেখা মানেই DSA-এর foundation শক্তিশালী করা।

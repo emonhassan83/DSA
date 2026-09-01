@@ -2,23 +2,25 @@
 
 ## ১) Sliding Window কী?
 
-Sliding window হলো এমন একটি pattern যেখানে window size ধীরে ধীরে shift করে solution খোঁজা হয়।
+Sliding window হলো এমন একটি pattern যেখানে আমরা একটি window (subarray/subsequence) ধরে রাখি এবং সেটি ধীরে ধীরে move করে answer খুঁজি।
 
-### সাধারণ ধারণা
-- window start ও end index থাকে
-- window expand/contract করা হয়
-- condition check করা হয়
+### মূল ধারণা
+- left ও right pointer ব্যবহার করা হয়
+- right বাড়িয়ে window expand করা হয়
+- condition invalid হলে left বাড়িয়ে shrink করা হয়
+- valid window-এ answer update করা হয়
 
 ---
 
-## ২) কেন দরকার?
+## ২) কেন ব্যবহার হয়?
 
 অনেক problem-এ subarray বা substring নিয়ে কাজ করতে হয়।
 
-যেমন:
-- maximum sum of subarray of size k
+### Common examples
+- maximum sum subarray of fixed size
 - longest substring without repeating characters
-- minimum window substring
+- minimum window required to satisfy condition
+- count of valid subarrays
 
 ---
 
@@ -27,13 +29,20 @@ Sliding window হলো এমন একটি pattern যেখানে windo
 int left = 0;
 for (int right = 0; right < n; right++) {
     // include arr[right] in window
+
     while (condition is invalid) {
-        // remove arr[left]
+        // shrink from left
         left++;
     }
+
     // process current window
 }
 ```
+
+### Why this works
+- right বাড়ালে window বড় হয়
+- condition invalid হলে left বাড়িয়ে window আবার valid করা হয়
+- valid state-এ answer compute করা হয়
 
 ---
 
@@ -43,7 +52,9 @@ int maxSumK(vector<int>& arr, int k) {
     int n = arr.size();
     int windowSum = 0;
 
-    for (int i = 0; i < k; i++) windowSum += arr[i];
+    for (int i = 0; i < k; i++) {
+        windowSum += arr[i];
+    }
 
     int ans = windowSum;
 
@@ -56,27 +67,35 @@ int maxSumK(vector<int>& arr, int k) {
 }
 ```
 
+### কী হচ্ছে?
+প্রথম window compute করা হয়েছে, তারপর এক element add করে এবং আগের element remove করে নতুন window তৈরি হয়েছে।
+
 ---
 
 ## ৫) Complexity
 
-- time: O(n)
-- space: O(1) (if using only variables)
+- Time: O(n)
+- Space: O(1)
+
+### কারণ
+প্রতিটি element শুধু একবার add হয়, আরেকবার remove হয়—যেন total O(n) work।
 
 ---
 
-## ৬) Sliding window-এ গুরুত্বপূর্ণ কৌশল
+## ৬) Sliding window-এর 핵 নীতি
 
-- window maintain রাখা
-- condition invalid হলে shrink
-- valid হলে answer update
+1. window maintain করা
+2. condition check করা
+3. invalid হলে shrink
+4. valid হলে answer update
+5. window size dynamic হতে পারে
 
 ---
 
 ## ৭) Interview note
 
-Sliding window অনেকটা dynamic array processing-এর মতো।
+Sliding window অনেক tough problemকে cleanly O(n) complexity-এ solve করে।
 
-এর মানে হলো we do not reprocess entire array repeatedly; we maintain only current window state.
+> মূল জিনিস হলো “window state” ঠিক রাখা। যতক্ষণ valid, answer update; invalid হলে shrink।
 
-> এটি O(n) complexity-এ অনেক tough problem solve করতে সাহায্য করে।
+এ pattern বোঝলে অনেক string ও array problem অনেক সহজ হয়ে যায়।

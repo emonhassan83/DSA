@@ -1,16 +1,21 @@
-# Local executable and runtime artifacts
+# Ignore local input/output files used in coding practice
+input.txt
+output.txt
+in.txt
+out.txt
+
+# Ignore compiled executables and build artifacts
 *.exe
 *.out
 *.obj
 *.o
+*.class
 
-# Input/output files
-input.txt
-output.txt
-
-# VS Code / editor metadata
+# Ignore editor and OS extras
 .vscode/
-
-# OS files
 .DS_Store
 Thumbs.db
+
+# Ignore temporary files
+*.tmp
+*.log
